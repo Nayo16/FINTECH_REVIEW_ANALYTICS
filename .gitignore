@@ -1,0 +1,19 @@
+# Ignore data exports and database artifacts
+data/
+*.csv
+*.db
+*.sqlite
+
+# Python cache and environments
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+*.pyd
+env/
+.venv/
+venv/
+
+# IDE metadata
+.vscode/
+.DS_Store
