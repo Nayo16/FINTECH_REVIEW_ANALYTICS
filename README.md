@@ -30,10 +30,17 @@ For each app, the scraper collects review text, rating, date, bank/app name, and
 ## Running the scraper
 
 ```powershell
+pip install -r requirements.txt
 python -m src.review_pipeline
 ```
 
 This writes a cleaned CSV file to `data/raw/clean_reviews.csv`.
+
+### Latest verified run
+- Total cleaned reviews: `1787`
+- Commercial Bank of Ethiopia Mobile: `592`
+- Bank of Abyssinia Mobile App: `598`
+- Dashen Bank Mobile Banking: `597`
 
 ## Limitations and notes
 

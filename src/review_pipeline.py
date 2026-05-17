@@ -7,9 +7,9 @@ from google_play_scraper import Sort, reviews
 
 
 APP_MAP = {
-    "com.cbe.mobile": "Commercial Bank of Ethiopia Mobile",
-    "com.bankofabyssinia.mbanking": "Bank of Abyssinia Mobile App",
-    "com.dashenbank.mobilebanking": "Dashen Bank Mobile Banking",
+    "prod.cbe.birr": "Commercial Bank of Ethiopia Mobile",
+    "com.boa.boaMobileBanking": "Bank of Abyssinia Mobile App",
+    "com.dashen.dashensuperapp": "Dashen Bank Mobile Banking",
 }
 
 OUTPUT_PATH = "data/raw/clean_reviews.csv"
@@ -46,20 +46,21 @@ def fetch_google_play_reviews(
 ) -> pd.DataFrame:
     all_reviews: List[Dict] = []
     batch_size = 200
-    last_score = None
+    continuation_token = None
 
-    for start in range(0, count, batch_size):
+    while len(all_reviews) < count:
         try:
-            batch, _ = reviews(
+            batch, continuation_token = reviews(
                 app_id,
                 lang=lang,
                 country=country,
                 sort=Sort.NEWEST,
                 count=batch_size,
                 filter_score_with=None,
+                continuation_token=continuation_token,
             )
         except Exception as exc:
-            print(f"Warning: Failed to fetch reviews for {bank_name} at offset {start}: {exc}")
+            print(f"Warning: Failed to fetch reviews for {bank_name}: {exc}")
             break
 
         if not batch:
@@ -76,10 +77,10 @@ def fetch_google_play_reviews(
                 }
             )
 
-        if len(batch) < batch_size:
+        if continuation_token is None:
             break
 
-    df = pd.DataFrame(all_reviews)
+    df = pd.DataFrame(all_reviews[:count])
     return df
 
 
