@@ -30,10 +30,59 @@ For each app, the scraper collects review text, rating, date, bank/app name, and
 ## Running the scraper
 
 ```powershell
+pip install -r requirements.txt
 python -m src.review_pipeline
 ```
 
 This writes a cleaned CSV file to `data/raw/clean_reviews.csv`.
+
+### Latest verified run
+- Total cleaned reviews: `1787`
+- Commercial Bank of Ethiopia Mobile: `592`
+- Bank of Abyssinia Mobile App: `598`
+- Dashen Bank Mobile Banking: `597`
+
+## Task 2–4: Sentiment, Thematic, Database, and Insights Pipeline
+
+This project now includes:
+
+- `src/sentiment_theme_pipeline.py` — sentiment scoring, TF-IDF keyword extraction, business theme assignment, and CSV export.
+- `src/db_pipeline.py` — PostgreSQL schema creation, bank metadata loading, review insertion, and integrity verification.
+- `src/insights_visualization.py` — visualization generation for sentiment distribution, rating distribution, and theme frequency.
+- `schema.sql` — PostgreSQL schema definition for `banks` and `reviews`.
+- `notebooks/task_2_3_4_analysis.ipynb` — documented analysis workflow for tasks 2 through 4.
+
+## New dependencies
+
+The analysis and database workflow require additional packages for NLP, model inference, visualization, and PostgreSQL support:
+
+- `transformers`, `torch`, `scikit-learn`, `spacy`, `nltk`, `sqlalchemy`, `psycopg2-binary`, `matplotlib`, `seaborn`
+
+## Running the new pipeline
+
+Install dependencies:
+
+```powershell
+pip install -r requirements.txt
+```
+
+Run sentiment and theme processing:
+
+```powershell
+python -m src.sentiment_theme_pipeline
+```
+
+Generate visualizations:
+
+```powershell
+python -m src.insights_visualization
+```
+
+Prepare PostgreSQL connection and load processed reviews:
+
+```powershell
+python -m src.db_pipeline --db-url postgresql+psycopg2://user:password@localhost:5432/bank_reviews
+```
 
 ## Limitations and notes
 
